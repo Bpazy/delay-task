@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.bpazy.delaytask.DelayTaskMapper">
+    <insert id="addDelayTask">
+        insert into delay_task (task_id, target_class, argument, task_status)
+        values (#{taskId}, #{targetClass}, #{argument}, #{taskStatus})
+    </insert>
+
+    <update id="updateDelayTask">
+        update delay_task set
+        task_status = #{taskStatus}
+        where task_id = #{taskId}
+    </update>
+
+    <select id="queryDelayTasks" resultType="com.github.bpazy.delaytask.DelayTask">
+        select task_id, target_class, argument, task_status
+        from delay_task
+        where task_id in
+        <foreach collection="taskIds" item="taskId" open="(" separator="," close=")">
+            #{taskId}
+        </foreach>
+    </select>
+</mapper>
